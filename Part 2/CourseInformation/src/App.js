@@ -1,20 +1,20 @@
 
 const Course = (props) => {
   const {course} = props;
-  let s = 0;
+
+  const {parts } = course;
+
+  const total = parts.reduce((sum,par) => sum += par.exercises,0)
+  
+
   return (
     
     <div>
       <h1>{course.name}</h1>
-      {course.parts.map((part) => {
-        
-        s += part.exercises;
-       return <p key = {part.id}>  {part.name} {part.exercises}   </p>
-
-      })
-}
+      {course.parts.map((part) => <p key={part.id}>  {part.name} {part.exercises}   </p>)}
       
-      <b>total of {s} exercises</b>
+      <b>total of {total} exercises</b>
+      
     </div>
     
   )
