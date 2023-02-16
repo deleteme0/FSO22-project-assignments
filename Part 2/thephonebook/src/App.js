@@ -1,18 +1,39 @@
 import { useState } from 'react'
 
-const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' , number: 12345}
-  ]) 
-  const [newName, setNewName] = useState('')
 
-  const [newNum, setNum] = useState('')
+const Filter = ({persons}) => {
 
+  
   const [newSearch, setSearch] = useState('')
 
   const handleSearch = (event) => {
 
     setSearch(event.target.value)
+  }
+
+
+  return (
+    <div>
+      <input value={newSearch} onChange={handleSearch} />
+
+      {persons.filter((each) => each.name.toLowerCase().includes(newSearch.toLowerCase())).map((each) => <p key={each.name} >{each.name} {each.number}</p>) }
+
+
+    </div>
+  )
+}
+
+const AddPersons = ({persons,setPersons}) =>{
+
+  const [newName,setNewName] = useState('')
+  const [newNum,setnewNum] = useState('')
+
+  const handleNumChange = (event) =>{
+    setnewNum(event.target.value)
+  }
+
+  const handleNameChange = (event) =>{
+    setNewName(event.target.value)
   }
 
   const handleSubmit = (event) => {
@@ -28,45 +49,57 @@ const App = () => {
       return 
     }
     setNewName("")
-    setNum('')
+    setnewNum('')
     const persObj = {
       name: newName,
       number: newNum
     }
     setPersons(persons.concat(persObj))
-
-    
-    console.log(newName)
-    
   }
 
-  const handleChange = (event) => {
-    console.log(event.target.value)
 
-    setNewName(event.target.value)
-  }
 
-  const handleNumChange = (event) => {
-    setNum(event.target.value)
+  return (
+    <div>
+    <form onSubmit={handleSubmit}>
+        <div>name: <input value = {newName} onChange={handleNameChange}/></div>
+        <div>number: <input value={newNum} onChange={handleNumChange} /></div>
+        <div><button type="submit">add</button></div>
+    </form>
+    </div>
 
-  }
+  )
+}
+
+const ShowPersons = ({persons}) => {
+
+  return(
+    <div>
+      {persons.map((each) => <p key={each.name}>{each.name} {each.number}</p>)}
+    </div>
+  )
+}
+
+const App = () => {
+  const [persons, setPersons] = useState([
+    { name: 'Arto Hellas' , number: 12345}
+  ]) 
 
   return (
     <div>
 
       <h2>Find a Number</h2>
-      <input value={newSearch} onChange={handleSearch} />
-
-      {persons.filter((each) => each.name.toLowerCase().includes(newSearch.toLowerCase())).map((each) => <p key={each.name} >{each.name} {each.number}</p>) }
+      
+      <Filter persons={persons} />
 
       <h2>Add a Number</h2>
-      <form onSubmit={handleSubmit}>
-        <div>name: <input value = {newName} onChange={handleChange}/></div>
-        <div>number: <input value={newNum} onChange={handleNumChange} /></div>
-        <div><button type="submit">add</button></div>
-      </form>
+
+      <AddPersons persons={persons} setPersons={setPersons}/>
+
       <h2>Numbers</h2>
-      {persons.map((each) => <p key={each.name}>{each.name} {each.number}</p>)}
+
+      <ShowPersons persons={persons} />
+      
     </div>
   )
 }
