@@ -23,7 +23,7 @@ const Filter = ({persons}) => {
   )
 }
 
-const AddPersons = ({persons,setPersons}) =>{
+const PersonsForm = ({persons,setPersons}) =>{
 
   const [newName,setNewName] = useState('')
   const [newNum,setnewNum] = useState('')
@@ -71,7 +71,7 @@ const AddPersons = ({persons,setPersons}) =>{
   )
 }
 
-const ShowPersons = ({persons}) => {
+const Persons = ({persons}) => {
 
   return(
     <div>
@@ -94,11 +94,11 @@ const App = () => {
 
       <h2>Add a Number</h2>
 
-      <AddPersons persons={persons} setPersons={setPersons}/>
+      <PersonsForm persons={persons} setPersons={setPersons}/>
 
       <h2>Numbers</h2>
 
-      <ShowPersons persons={persons} />
+      <Persons persons={persons} />
       
     </div>
   )
