@@ -1,4 +1,6 @@
-import { useState } from 'react'
+
+import { useState, useEffect } from 'react'
+import axios from 'axios'
 
 
 const Filter = ({persons}) => {
@@ -11,12 +13,21 @@ const Filter = ({persons}) => {
     setSearch(event.target.value)
   }
 
+  const removeDups = ele => {
+
+    if (newSearch === ''){
+      return false
+    }
+
+    return ele.name.toLowerCase().includes(newSearch.toLowerCase())
+  }
+
 
   return (
     <div>
       <input value={newSearch} onChange={handleSearch} />
 
-      {persons.filter((each) => each.name.toLowerCase().includes(newSearch.toLowerCase())).map((each) => <p key={each.name} >{each.name} {each.number}</p>) }
+      {persons.filter(removeDups).map((each) => <p key={each.name} >{each.name} {each.number}</p>) }
 
 
     </div>
@@ -81,9 +92,18 @@ const Persons = ({persons}) => {
 }
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas' , number: 12345}
-  ]) 
+  const [persons, setPersons] = useState([]) 
+
+
+  useEffect(() => {
+    axios
+    .get('http://localhost:3001/persons')
+    .then(response => {
+      setPersons(response.data)
+    })
+  },[])
+
+  console.log('before');
 
   return (
     <div>
