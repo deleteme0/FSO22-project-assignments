@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
+import personservice from './services/persons'
+
 
 const Filter = ({persons}) => {
 
@@ -52,13 +54,33 @@ const PersonsForm = ({persons,setPersons}) =>{
     event.preventDefault()
     console.log(event.target)
 
-    const n = persons.filter((each) => each.name === newName).length
+    const n = persons.filter((each) => each.name === newName)
     
-    if (n > 0){
-      alert(`${newName} is already added to the phonebook`)
+    if (n.length > 0){
+      
+      if (window.confirm("Do u want to replace the old number with new one?")){
+
+        const newPerson = { ...n[0], number : newNum}
+
+        personservice
+        .update(newPerson.id,newPerson)
+        .then(response => {
+          console.log("Done");
+          personservice
+          .getAll()
+          .then(response => {
+            setPersons(response.data)
+          })
+        })
+      }
+
       setNewName("")
+      setnewNum('')
       return 
     }
+
+    
+
     const persObj = {
       name: newName,
       number: newNum
@@ -70,10 +92,16 @@ const PersonsForm = ({persons,setPersons}) =>{
 
     setPersons(persons.concat(persObj))
 
-    axios
-    .post('http://localhost:3001/persons', persObj)
+    personservice
+    .create(persObj)
     .then(response => {
       console.log(response)
+
+      personservice
+      .getAll()
+      .then(response => {
+        setPersons(response.data)
+      })
     })
   }
 
@@ -91,11 +119,11 @@ const PersonsForm = ({persons,setPersons}) =>{
   )
 }
 
-const Persons = ({persons}) => {
+const Persons = ({persons, doDel}) => {
 
   return(
     <div>
-      {persons.map((each) => <p key={each.name}>{each.name} {each.number}</p>)}
+      {persons.map((each) =><p key={each.name}>{each.name} {each.number}   <button onClick={() => (doDel(each.id,each.name))}> Delete</button> </p> )}
     </div>
   )
 }
@@ -105,14 +133,33 @@ const App = () => {
 
 
   useEffect(() => {
-    axios
-    .get('http://localhost:3001/persons')
+    personservice
+    .getAll()
     .then(response => {
       setPersons(response.data)
     })
   },[])
 
   console.log('before');
+
+  const doDel = (id,name) => {
+
+    if (!window.confirm(`Are you sure you want to delete ${name} ?`)){
+      return
+    }
+
+
+    personservice
+    .delPers(id)
+    .then(response => {
+      console.log(`${name} has been deleted`);
+      personservice
+      .getAll()
+      .then(response => {
+        setPersons(response.data)
+      })
+    })
+  } 
 
   return (
     <div>
@@ -127,7 +174,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Persons persons={persons} />
+      <Persons persons={persons} doDel={doDel} />
       
     </div>
   )
