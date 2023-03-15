@@ -1,9 +1,32 @@
 
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 
 import personservice from './services/persons'
 
+
+const Notification = ({message}) =>{
+
+  if (message === null){
+    return null
+  }
+
+  const notistyle = {
+    color: 'green',
+  background: 'lightgrey',
+  fontSize: 20,
+  borderStyle: 'solid',
+  borderadius: 5,
+  padding: 10,
+  marginbottom: 10
+
+  }
+
+  return (
+    <div style={notistyle}>
+        <em>{message}</em>
+    </div>
+  )
+}
 
 const Filter = ({persons}) => {
 
@@ -36,7 +59,7 @@ const Filter = ({persons}) => {
   )
 }
 
-const PersonsForm = ({persons,setPersons}) =>{
+const PersonsForm = ({persons,setPersons,setNoti}) =>{
 
   const [newName,setNewName] = useState('')
   const [newNum,setnewNum] = useState('')
@@ -66,11 +89,19 @@ const PersonsForm = ({persons,setPersons}) =>{
         .update(newPerson.id,newPerson)
         .then(response => {
           console.log("Done");
+
+          setNoti(newName + " was updated")
+
+          setTimeout(() =>{
+            setNoti(null)
+          },5000)
           personservice
           .getAll()
           .then(response => {
             setPersons(response.data)
           })
+
+          
         })
       }
 
@@ -101,6 +132,13 @@ const PersonsForm = ({persons,setPersons}) =>{
       .getAll()
       .then(response => {
         setPersons(response.data)
+
+        setNoti(persObj.name + " was Added")
+
+        setTimeout( () => {
+          setNoti(null)
+        },5000)
+
       })
     })
   }
@@ -130,6 +168,8 @@ const Persons = ({persons, doDel}) => {
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
+
+  const [notti, setNoti] = useState(null)
 
 
   useEffect(() => {
@@ -164,13 +204,17 @@ const App = () => {
   return (
     <div>
 
+      <h1>Phonebook</h1>
+
+      <Notification message={notti} />
+
       <h2>Find a Number</h2>
       
       <Filter persons={persons} />
 
       <h2>Add a Number</h2>
 
-      <PersonsForm persons={persons} setPersons={setPersons}/>
+      <PersonsForm persons={persons} setPersons={setPersons} setNoti={setNoti}/>
 
       <h2>Numbers</h2>
 
