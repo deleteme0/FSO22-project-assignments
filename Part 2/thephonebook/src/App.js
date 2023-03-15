@@ -99,6 +99,12 @@ const PersonsForm = ({persons,setPersons,setNoti}) =>{
           .getAll()
           .then(response => {
             setPersons(response.data)
+          }).catch( () => {
+            setNoti(newName + " was Deleted")
+
+            setTimeout(() => {
+              setNoti(null)
+            },5000)
           })
 
           
@@ -198,6 +204,12 @@ const App = () => {
       .then(response => {
         setPersons(response.data)
       })
+      }).catch( () => {
+      setNoti(name + " was Deleted")
+
+      setTimeout(() => {
+        setNoti(null)
+      },5000)
     })
   } 
 
@@ -207,6 +219,7 @@ const App = () => {
       <h1>Phonebook</h1>
 
       <Notification message={notti} />
+
 
       <h2>Find a Number</h2>
       
