@@ -33,7 +33,7 @@ const ShowCountries = ({currFilter,countryData}) => {
 
   const curr = act[0];
   console.log(curr);
-  console.log(curr.languages)
+  //console.log(curr.languages)
 
   var arr = []
   for(var key in curr.languages){
@@ -50,6 +50,7 @@ const ShowCountries = ({currFilter,countryData}) => {
       <ul>
         {arr.map((each,i) => <li key={i}>{each}</li>)}
       </ul>
+      <img src={curr.flags.png} alt='not available'></img>
     </div>
   )
   //{curr.languages.map((element,i) => <li key={i}> {element}</li> )}
