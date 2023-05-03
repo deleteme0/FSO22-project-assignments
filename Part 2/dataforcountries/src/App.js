@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import dataservies from './services/thedata'
 
 
-const ShowCountries = ({currFilter,countryData}) => {
+const ShowCountries = ({currFilter,countryData,setCurrentFilter}) => {
 
   const act = countryData.filter((each) => {
     return each.name.common.includes(currFilter)
@@ -19,7 +19,7 @@ const ShowCountries = ({currFilter,countryData}) => {
   if (act.length >= 2){
     return (
       <div>
-        {act.map((each,i) => <p key={i}>{each.name.common} </p>)}
+        {act.map((each,i) => <p key={i}>{each.name.common} <button onClick={()=> {setCurrentFilter(each.name.common)}}>show</button></p>)}
       
       </div>
     )
@@ -90,7 +90,7 @@ const App = () => {
   return (
     <div>
       <Filter setCurrentFilter={setCurrentFilter} currFilter={currFilter} />
-      <ShowCountries currFilter={currFilter} countryData={countryData} />
+      <ShowCountries currFilter={currFilter} countryData={countryData} setCurrentFilter={setCurrentFilter}/>
     </div>
   )
 }
