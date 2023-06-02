@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import dataservies from './services/thedata'
 
 
+
 const ShowCountries = ({currFilter,countryData,setCurrentFilter}) => {
 
   const act = countryData.filter((each) => {
@@ -78,6 +79,7 @@ const App = () => {
 
   const [countryData,setCountryData] = useState([])
   const [currFilter,setCurrentFilter] = useState('')
+  const apikey = process.env.REACT_APP_API_KEY
   
   useEffect(()=>{
     dataservies.getAll().then(response => {setCountryData(response.data)}).catch(() => {
