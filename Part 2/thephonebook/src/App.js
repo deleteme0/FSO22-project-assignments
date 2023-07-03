@@ -146,6 +146,12 @@ const PersonsForm = ({persons,setPersons,setNoti}) =>{
         },5000)
 
       })
+    }).catch(error => {
+      setNoti(error.message)
+
+      setTimeout( () => {
+        setNoti(null)
+      }, 5000)
     })
   }
 
