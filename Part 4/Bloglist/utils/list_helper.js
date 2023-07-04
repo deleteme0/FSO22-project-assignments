@@ -1,3 +1,5 @@
+const ld = require('lodash')
+
 const dummy = (blogs) => {
     // ...
     return 1;
@@ -37,8 +39,37 @@ const favouriteBlog = (blogs) =>{
     }
 
     return blogs.find(find_blog)
+}
 
 
+const mostBlogs = (blogs) => {
+    if (blogs.length == 0){
+        return undefined
+    }
+
+    var arr = {}
+    var maxblog = 0
+    var au = ''
+
+    const findmaxblog = (blog) => {
+        if (blog.author in arr){
+            arr[blog.author] += 1
+        }
+        else{
+            arr[blog.author] = 1
+        }
+
+        if (arr[blog.author] > maxblog){
+            maxblog = arr[blog.author]
+            au = blog.author
+        } 
+    }
+    blogs.forEach(findmaxblog)
+    var ret = {
+        'author': au,
+        'blogs': arr[au]
+    }
+    return ret
 }
 
 
@@ -46,5 +77,6 @@ const favouriteBlog = (blogs) =>{
 module.exports = {
   dummy,
   totalLikes,
-  favouriteBlog
+  favouriteBlog,
+  mostBlogs
 }

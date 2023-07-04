@@ -105,3 +105,35 @@ describe('FavouriteBlog test',()=>{
           })
     })
 })
+
+
+describe('mostBlogs test',()=>{
+
+    test('test with 0 blogs',()=>{
+        
+
+        const result = listHelper.mostBlogs(zeroblogs)
+
+        expect(result).toEqual(undefined)
+    })
+
+    test('test with 1 blog',()=>{
+        
+        const result = listHelper.mostBlogs(oneblog)
+
+        expect(result).toEqual({
+            'author': "Michael Chan",
+            'blogs': 1
+        })
+    })
+
+    test('test with many blogs',()=>{
+        
+        const result = listHelper.mostBlogs(manyblogs)
+
+        expect(result).toEqual({
+            'author': "Edsger W. Dijkstra",
+            'blogs': 2
+        })
+    })
+})
