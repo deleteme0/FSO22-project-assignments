@@ -21,5 +21,13 @@ blogrouter.post('/', (request, response) => {
     })
 })
 
+blogrouter.delete('/:i', async(request,response) => {
+
+  await Blog.deleteOne( { title: request.params.i})
+
+  response.status(201).end()
+
+})
+
 module.exports = blogrouter
   
