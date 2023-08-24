@@ -23,10 +23,36 @@ blogrouter.post('/', (request, response) => {
 
 blogrouter.delete('/:i', async(request,response) => {
 
-  await Blog.deleteOne( { title: request.params.i})
+  try{
+    //await Blog.deleteOne( { title: request.params.i})
+    await Blog.findByIdAndDelete(request.params.i)
+  }
+  catch{
+    console.log(request.params.i);
+  }
 
   response.status(201).end()
 
+})
+
+blogrouter.put('/:i',async(request,response) => {
+
+  const body = request.body;
+
+  const nb = {
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: parseInt(body.likes)
+  }
+
+  try{
+    await Blog.findByIdAndUpdate(request.params.i,nb)
+  }catch{
+    console.log('rip');
+  }
+
+  response.status(201).end()
 })
 
 module.exports = blogrouter

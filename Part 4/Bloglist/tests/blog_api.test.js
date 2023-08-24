@@ -58,13 +58,33 @@ test('Blogs post check', async() =>{
 test('Blog delete', async() => {
   
   
-  const ll = await api.delete('/api/blog/Hello')
-  
   const allb = await api.get('/api/blog')
+
+  
+  const ll = await api.delete('/api/blog/'+ allb.body[0].id)
+
+  const allb2 = await api.get('/api/blog')
   
 
-  expect(allb.body.length).toEqual(1)
+  expect(allb2.body.length).toEqual(1)
 },10000)
+
+test('Blog update', async()=>{
+
+  const allb = await api.get('/api/blog')
+
+  const ll = await api.put('/api/blog/'+allb.body[0].id).send({
+    title: 'Hello',
+    author: 'this',
+    url: 'pagman.com',
+    likes: 69
+  })
+
+  const allb2 = await api.get('/api/blog')
+
+  expect(allb2.body[0].likes).toEqual(69)
+
+})
 
 beforeEach(async () =>{
   await Blog.deleteMany({})
