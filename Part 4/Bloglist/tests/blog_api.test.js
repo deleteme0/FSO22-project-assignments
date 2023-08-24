@@ -32,6 +32,13 @@ test('Blog post count', async () => {
   expect(ctr).toEqual(2)
 })
 
+test('Blog id exists', async () =>{
+
+  const notes = await api.get('/api/blog')
+
+  expect(notes.body[0]._id).toBeDefined()
+})
+
 beforeEach(async () =>{
   await Blog.deleteMany({})
   const nb = new Blog(exblogs[0])
