@@ -39,6 +39,22 @@ test('Blog id exists', async () =>{
   expect(notes.body[0]._id).toBeDefined()
 })
 
+test('Blogs post check', async() =>{
+
+  const newBlog = {
+    title: 'Hello3',
+    author: 'this3',
+    url: 'pagman3.com',
+    likes: 2121
+  }
+
+  await api.post('/api/blog',newBlog)
+
+  const allblogs = await api.get('/api/blog')
+
+  expect(allblogs.body.length).toEqual(3)
+})
+
 beforeEach(async () =>{
   await Blog.deleteMany({})
   const nb = new Blog(exblogs[0])
