@@ -5,8 +5,8 @@ const {url} = require('./utils/config')
 
 
 const mongoose = require('mongoose')
-const Blog = require('./models/blog')
 const Blogr = require('./controllers/blogs')
+const Userr = require('./controllers/users')
 
 mongoose.connect(url).then(() => {
     console.log("Connected")
@@ -15,6 +15,7 @@ mongoose.connect(url).then(() => {
 app.use(cors())
 app.use(express.json())
 app.use('/api/blog',Blogr)
+app.use('/api/user',Userr)
 
 
 module.exports = app
